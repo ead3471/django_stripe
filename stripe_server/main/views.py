@@ -105,6 +105,8 @@ def buy_order(request, id):
 
 
 def item_info(request, id):
+    import platform
+    print(platform.python_version())
     item = get_object_or_404(Item, pk=id)
     context = {
         "item": item,

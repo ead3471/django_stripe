@@ -1,0 +1,2 @@
+STRIPE_SECRET_KEY=<Stripe secret key here>
+STRIPE_PUBLIC_KEY=<Stripe public key here>
