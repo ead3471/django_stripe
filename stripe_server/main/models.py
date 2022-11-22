@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+
 class Currency(models.Model):
     name = models.CharField(max_length=50, verbose_name='Наименование')
     code = models.CharField(max_length=3, verbose_name='Код валюты')
@@ -32,8 +33,12 @@ class Item(models.Model):
 class Discount(models.Model):
     percent_off = models.DecimalField(max_digits=4, decimal_places=2)
     name = models.CharField(max_length=15)
-    description = models.CharField(max_length=50, default='Default description')
-    stripe_id = models.CharField(max_length=30, null=True, default=None)
+    description = models.CharField(max_length=50,
+                                   default='Default description')
+    stripe_id = models.CharField(max_length=30,
+                                 null=True,
+                                 blank=True,
+                                 default=None)
 
     def __str__(self):
         return str(self.percent_off)
@@ -43,7 +48,10 @@ class Tax(models.Model):
     tax_rate = models.DecimalField(max_digits=4, decimal_places=2)
     name = models.CharField(max_length=15)
     description = models.CharField(max_length=50, default='Default description')
-    stripe_id = models.CharField(max_length=30, null=True, default=None)
+    stripe_id = models.CharField(max_length=30,
+                                 null=True,
+                                 blank=True,
+                                 default=None)
 
     def __str__(self):
         return str(self.tax_rate)
@@ -60,12 +68,15 @@ class Order(models.Model):
                                  on_delete=models.CASCADE,
                                  related_name='orders',
                                  verbose_name="Скидка, %",
-                                 null=True)
+                                 null=True,
+                                 blank=True
+                                 )
     tax = models.ForeignKey(Tax,
                             on_delete=models.CASCADE,
                             related_name='ordders',
                             verbose_name="Налог, %",
-                            null=True)
+                            null=True,
+                            blank=True)
 
 
 
