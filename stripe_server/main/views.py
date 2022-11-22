@@ -22,6 +22,11 @@ def create_product_if_not_exist(item: Item) -> stripe.Product:
 
     return product
 
+def index(request):
+    return render(request,
+                  template_name='main/all_items.html',
+                  context={'items': Item.objects.all()})
+    
 
 def buy_item(request, id):
     item = get_object_or_404(Item, pk=id)
