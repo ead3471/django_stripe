@@ -22,11 +22,12 @@ def create_product_if_not_exist(item: Item) -> stripe.Product:
 
     return product
 
+
 def index(request):
     return render(request,
                   template_name='main/all_items.html',
                   context={'items': Item.objects.all()})
-    
+
 
 def buy_item(request, id):
     item = get_object_or_404(Item, pk=id)
@@ -52,7 +53,13 @@ def buy_item(request, id):
     except Exception as e:
         return HttpResponse(str(e))
 
-    return HttpResponse(dumps(checkout_session))
+    return HttpResponse(dumps({"id": checkout_session.stripe_id}))
+
+
+def orders_list(request):
+    return render(request,
+                  template_name='main/orders_list.html',
+                  context={'orders': Order.objects.all()})
 
 
 def buy_order(request, id):
@@ -106,12 +113,10 @@ def buy_order(request, id):
     except Exception as e:
         return HttpResponse(str(e))
 
-    return HttpResponse(dumps(checkout_session))
+    return HttpResponse(dumps({"id": checkout_session.stripe_id}))
 
 
 def item_info(request, id):
-    import platform
-    print(platform.python_version())
     item = get_object_or_404(Item, pk=id)
     context = {
         "item": item,

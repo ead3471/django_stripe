@@ -6,6 +6,7 @@
         <h1>Registered Items</h1>
         {% for item in items %}
             {% include 'main/includes/item_card.html' %}
+            <a href = '/item/{{item.id}}'> Buy Page </a>
         {% endfor %}
     </body> 
 </html> 

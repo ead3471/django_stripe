@@ -1,0 +1,17 @@
+<html> 
+    <head> 
+        <title>Order info</title> 
+    </head> 
+    <body>
+        <h1>Registered orders:</h1>
+        {% for order in orders %}
+            <hr>
+            {% for item in order.product.all %}
+                <p>{{item.name}}</p>
+            {% endfor %}
+            <a href ='/orders/{{order.pk}}'> Detailed order info </a>
+        {%endfor%}
+       
+        </script>
+    </body> 
+</html> 
