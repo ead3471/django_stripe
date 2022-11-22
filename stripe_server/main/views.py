@@ -144,4 +144,3 @@ def checkout_success(request):
 
 def checkout_cancel(request):
     return redirect('/checkout_cancel/')
-
