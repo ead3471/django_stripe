@@ -32,6 +32,8 @@ class Item(models.Model):
 class Discount(models.Model):
     percent_off = models.DecimalField(max_digits=4, decimal_places=2)
     name = models.CharField(max_length=15)
+    description = models.CharField(max_length=50, default='Default description')
+    stripe_id = models.CharField(max_length=30, null=True, default=None)
 
     def __str__(self):
         return str(self.percent_off)
@@ -40,6 +42,8 @@ class Discount(models.Model):
 class Tax(models.Model):
     tax_rate = models.DecimalField(max_digits=4, decimal_places=2)
     name = models.CharField(max_length=15)
+    description = models.CharField(max_length=50, default='Default description')
+    stripe_id = models.CharField(max_length=30, null=True, default=None)
 
     def __str__(self):
         return str(self.tax_rate)

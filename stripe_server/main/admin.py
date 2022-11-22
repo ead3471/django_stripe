@@ -17,11 +17,11 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 class DiscountAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'percent_off']
+    list_display = ['id', 'name', 'percent_off', 'description', 'stripe_id']
 
 
 class TaxAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'tax_rate']
+    list_display = ['id', 'name', 'tax_rate', 'description', 'stripe_id']
 
 
 admin.site.register(Item, ItemAdmin)

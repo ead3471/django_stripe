@@ -53,6 +53,19 @@ def buy_item(request, id):
 def buy_order(request, id):
     order = get_object_or_404(Order, pk=id)
     order_items = order.product.all()
+
+    taxes = []
+    if order.tax:
+        if not order.tax.stripe_id:
+            print('create tax')
+            tax = stripe.TaxRate.create(display_name=order.tax.name,
+                                        description=order.tax.description,
+                                        percentage=order.tax.tax_rate,
+                                        inclusive=False,)
+            order.tax.stripe_id = tax.stripe_id
+            order.tax.save()
+        taxes.append(order.tax.stripe_id)
+
     line_items = [{
                     'price_data': {
                         'currency': item.currency.code,
@@ -61,6 +74,7 @@ def buy_order(request, id):
                         },
                         'unit_amount': int(item.price*100),
                     },
+                    'tax_rates': taxes,
                     'quantity': 1,
                 }
                 for item in order_items
@@ -68,11 +82,14 @@ def buy_order(request, id):
     try:
         discounts = []
         if order.discount:
-            coupon = stripe.Coupon.create(
-                percent_off=order.discount.percent_off,
-                name=order.discount.name,
-                duration='forever')
-            discounts.append({'coupon': coupon})
+            if not order.discount.stripe_id:
+                coupon = stripe.Coupon.create(
+                    percent_off=order.discount.percent_off,
+                    name=order.discount.name,
+                    duration='once')
+                order.discount.stripe_id = coupon.stripe_id
+                order.discount.save()
+            discounts.append({'coupon': order.discount.stripe_id})
 
         checkout_session = stripe.checkout.Session.create(
             line_items=line_items,
